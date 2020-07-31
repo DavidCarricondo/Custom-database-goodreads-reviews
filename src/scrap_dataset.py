@@ -17,7 +17,7 @@ DRIVER = os.getenv("DRIVER")
 GR_PASS = os.getenv("GR_PASS")
 GR_USER = os.getenv("GR_USER")
 
-books = pd.read_csv('../INPUT/books_list.csv', header=None)
+books = pd.read_csv('books_list.csv', header=None)
 
 ## Modified functions from goodread_utils.py
 
@@ -76,7 +76,7 @@ def get_GR_reviews(driver, reviews):
     '''
     Get the first 30 reviews from the book page
     '''
-    #For reviews in the second page:
+    #Uncomment next two lines for reviews in the second page:
     #driver.find_element_by_class_name('next_page').click()
     #time.sleep(5)
 
@@ -125,7 +125,7 @@ def get_gr_database(DRIVER, GR_USER, GR_PASS, books):
         except:
             continue
     
-    with open("../OUTPUT/goodread_reviews_dataset.json", "r+") as file:
+    with open("../DATA/goodread_reviews_dataset.json", "r+") as file:
         data = json.load(file)
         data.update(reviews)
         file.seek(0)
