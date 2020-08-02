@@ -1,4 +1,4 @@
-# Custom-database-goodreads-reviews
+# Goodreads reviews custom database
 
 <img src='Goodreads.jpeg' width=600 height=200>
 
@@ -8,7 +8,10 @@ Custom reviews-database created from scrapping goodreads.com.
 I used **Selenium** to automate the scrapping of the latest 60 reviews posted in the website of more than 1000 titles. Take a look at [the code](https://github.com/DavidCarricondo/Custom-database-goodreads-reviews/blob/master/src/scrap_dataset.py)!!
 
 ## The result
-The data comes in two flavors. The raw results is a [**json** file](https://github.com/DavidCarricondo/Custom-database-goodreads-reviews/blob/master/DATA/goodread_reviews_dataset.json) with the following format:
+The data comes in two flavors, the **raw result** and the **cleaned version**. 
+
+
+The **raw result** is a [**json** file](https://github.com/DavidCarricondo/Custom-database-goodreads-reviews/blob/master/DATA/goodread_reviews_dataset.json) with 51797 reviews with the following format:
 
 <pre><code>
 {"0": {"review": "...", 
@@ -25,3 +28,6 @@ Note: Grades reflect the website grading. This is:
 +   'liked it': 3 stars
 +   'really liked it': 4 stars
 +   'it was amazing': 5 stars
+
+
+The **clean version** 22512 reviews
