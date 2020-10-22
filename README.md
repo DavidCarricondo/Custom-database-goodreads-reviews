@@ -5,7 +5,7 @@
 Custom reviews-database created from scrapping goodreads.com.
 
 
-I used **Selenium** to automate the scrapping of the latest 60 reviews posted in the website of more than 1000 titles. Take a look at [the code](https://github.com/DavidCarricondo/Custom-database-goodreads-reviews/blob/master/src/scrap_dataset.py)!!
+I used **Selenium** to automate the scrapping of the latest reviews posted in the website of more than 1000 titles. Take a look at [the code](https://github.com/DavidCarricondo/Custom-database-goodreads-reviews/blob/master/src/scrap_dataset.py)!!
 
 ## **The results**
 The data comes in two flavors, the **raw result** and the **cleaned version**. 
