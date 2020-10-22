@@ -1,6 +1,6 @@
 # Goodreads reviews custom database
 
-<img src='Goodreads.jpeg' width=600 height=200>
+<img src='images/Goodreads.jpeg' width=600 height=200>
 
 Custom reviews-database created from scrapping goodreads.com.
 
