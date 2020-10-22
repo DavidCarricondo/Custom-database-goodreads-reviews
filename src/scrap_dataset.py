@@ -8,17 +8,6 @@ import pandas as pd
 import json
 import time
 
-##This script load runs a function to create a dataset with reviews and ratings scrapped from goodreads.com from a list of more than 1000 books
-
-
-dotenv.load_dotenv()
-
-DRIVER = os.getenv("DRIVER")
-GR_PASS = os.getenv("GR_PASS")
-GR_USER = os.getenv("GR_USER")
-
-books = pd.read_csv('books_list.csv', header=None)
-
 ## Modified functions from goodread_utils.py
 
 def gr_log(driver, user, password):
@@ -38,6 +27,9 @@ def gr_log(driver, user, password):
     driver.implicitly_wait(3) 
 
 def get_book(driver, name):
+    '''
+    Go to book page from logged in home page
+    '''
     try:
         inputs = driver.find_elements_by_tag_name('input')
     except:
@@ -57,7 +49,7 @@ def get_book(driver, name):
     
 def get_book2(driver, name):
     '''
-    Find book from within another book page
+    Go to book page from within another book page
     '''
     inputs = driver.find_elements_by_class_name('searchBox__input')
     
@@ -72,13 +64,12 @@ def get_book2(driver, name):
     except:
         raise NameError
 
-def get_GR_reviews(driver, reviews):
+def get_GR_reviews(driver, reviews, pages=0):
     '''
-    Get the first 30 reviews from the book page
+    Get the first 30 reviews from the book page and keeps trying
+    to get the reviews in the next number of pages indicated by pages
+    using recursion
     '''
-    #Uncomment next two lines for reviews in the second page:
-    #driver.find_element_by_class_name('next_page').click()
-    #time.sleep(5)
 
     reviews_container = driver.find_elements_by_class_name('review')
     rvws = {}
@@ -98,8 +89,18 @@ def get_GR_reviews(driver, reviews):
         number+=1
     reviews.update(rvws)
 
+    #By recursion, it will click next page and re-run the function with pages = pages - 1 until pages=0
+    if pages > 0:
+        try:
+            driver.find_element_by_class_name('next_page').click()
+            time.sleep(5)
+            get_GR_reviews(driver, reviews, pages = pages-1)
+        except:
+            pass
+
+
    
-def get_gr_database(DRIVER, GR_USER, GR_PASS, books):
+def get_gr_database(DRIVER, GR_USER, GR_PASS, books, pages=0):
     '''
     Main function that uses the other functions to create a database with goodreads reviews and their rating
     '''
@@ -110,7 +111,7 @@ def get_gr_database(DRIVER, GR_USER, GR_PASS, books):
     get_book(driver, books[0].strip())
     driver.implicitly_wait(2)
     reviews = {}
-    get_GR_reviews(driver, reviews)
+    get_GR_reviews(driver, reviews, pages)
     
     for name in books[1:]:
         print(name)
@@ -121,7 +122,7 @@ def get_gr_database(DRIVER, GR_USER, GR_PASS, books):
         driver.implicitly_wait(3)
 
         try:
-            get_GR_reviews(driver, reviews)
+            get_GR_reviews(driver, reviews, pages)
         except:
             continue
     
@@ -130,13 +131,21 @@ def get_gr_database(DRIVER, GR_USER, GR_PASS, books):
         data.update(reviews)
         file.seek(0)
         json.dump(data, file)
-
-
-        
+ 
     driver.quit()
-    
-        
+           
     return print(f'The reviews dataset has increased in {len(reviews)} reviews')
 
 if __name__=='__main__':
-    get_gr_database(DRIVER, GR_USER, GR_PASS, list(books[0]))
+
+    ##This script load runs a function to create a dataset with reviews and ratings scrapped from goodreads.com from a list of more than 1000 books
+
+    dotenv.load_dotenv()
+
+    DRIVER = os.getenv("DRIVER")
+    GR_PASS = os.getenv("GR_PASS")
+    GR_USER = os.getenv("GR_USER")
+
+    books = pd.read_csv('books_list.csv', header=None)
+
+    get_gr_database(DRIVER, GR_USER, GR_PASS, list(books[0]), pages=4)
