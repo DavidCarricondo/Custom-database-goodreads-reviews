@@ -66,14 +66,14 @@ def get_book2(driver, name):
 
 def get_GR_reviews(driver, reviews, pages=0):
     '''
-    Get the first 30 reviews from the book page and keeps trying
+    Get the first reviews from the book page and keeps trying
     to get the reviews in the next number of pages indicated by pages
     using recursion
     '''
 
     reviews_container = driver.find_elements_by_class_name('review')
     rvws = {}
-    number = len(reviews) + 26919
+    number = len(reviews)
     for e in reviews_container:
         try:
             grade = e.find_element_by_class_name('staticStar').text
